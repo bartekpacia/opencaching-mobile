@@ -5,6 +5,8 @@ import platform.UIKit.UIViewController
 
 fun MainViewController(): UIViewController {
     return ComposeUIViewController {
-        App()
+        MyApplicationTheme {
+            App()
+        }
     }
 }
