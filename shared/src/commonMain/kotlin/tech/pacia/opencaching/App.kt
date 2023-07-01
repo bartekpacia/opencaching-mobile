@@ -49,6 +49,7 @@ fun App() {
                 modifier = Modifier.padding(8.dp),
                 value = username,
                 onValueChange = { username = it },
+                label = { Text("Username") },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Rounded.Person,
@@ -63,6 +64,7 @@ fun App() {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                 onValueChange = { password = it },
+                label = { Text("Password") },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Rounded.Lock,
