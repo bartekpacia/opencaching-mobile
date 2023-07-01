@@ -38,11 +38,6 @@ kotlin {
                 implementation(compose.materialIconsExtended)
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
     }
 }
 
