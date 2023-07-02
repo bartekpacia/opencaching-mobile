@@ -1,8 +1,11 @@
 package tech.pacia.opencaching
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +28,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,93 +39,36 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import tech.pacia.opencaching.features.map.MapScreen
+import tech.pacia.opencaching.features.sign_in.SignInScreen
+import tech.pacia.opencaching.navigation.MapPage
+import tech.pacia.opencaching.navigation.NavigationStack
+import tech.pacia.opencaching.navigation.Page
+import tech.pacia.opencaching.navigation.SignInPage
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun App() {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var count by remember { mutableStateOf(0) }
-    var showPassword by remember { mutableStateOf(false) }
-
-    val localFocusManager = LocalFocusManager.current
-
-    Scaffold(
-        modifier = Modifier.pointerInput(Unit) {
-            detectTapGestures(
-                onTap = { localFocusManager.clearFocus() }
-            )
+    val navigationStack = rememberSaveable(
+        saver = listSaver<NavigationStack<Page>, Page>(
+            restore = { NavigationStack(*it.toTypedArray()) },
+            save = { it.stack },
+        ),
+        init = {
+            NavigationStack(SignInPage())
         },
-        topBar = { TopAppBar(title = { Text("Opencaching") }) }
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                TextField(
-                    modifier = Modifier.padding(8.dp),
-                    value = username,
-                    onValueChange = { username = it },
-                    label = { Text("Username") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Person,
-                            contentDescription = "Username"
-                        )
-                    },
-                )
+    )
 
-                TextField(
-                    modifier = Modifier.padding(8.dp),
-                    value = password,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-                    onValueChange = { password = it },
-                    label = { Text("Password") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Lock,
-                            contentDescription = "Password",
-                        )
-                    },
-                    trailingIcon = {
-                        IconButton(
-                            onClick = { showPassword = !showPassword }
-                        ) {
-                            Icon(
-                                imageVector = if (showPassword) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                contentDescription = "xd"
-                            )
-                        }
-                    }
-                )
+    AnimatedContent(
+        targetState = navigationStack.lastWithIndex(),
+    ) { (_, page) ->
+        when (page) {
+            is SignInPage -> {
+                SignInScreen(navStack = navigationStack)
+            }
 
-                Button(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth(fraction = 0.75f).padding(8.dp)
-
-                ) {
-                    Text("Sign in")
-                }
-
-                Button(
-                    onClick = {
-                        count++
-                    }
-                ) {
-                    Text("Count: $count")
-                }
-
-                Spacer(
-                    modifier = Modifier.width(32.dp)
-                )
-
-                Map(
-                    position = Pair(50.196168, 18.446953),
-                    title = "xd",
-                )
+            is MapPage -> {
+                MapScreen(navStack = navigationStack)
             }
         }
     }
