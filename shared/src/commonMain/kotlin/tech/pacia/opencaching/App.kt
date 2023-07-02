@@ -2,9 +2,11 @@ package tech.pacia.opencaching
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -97,6 +99,15 @@ fun App() {
             ) {
                 Text("Count: $count")
             }
+
+            Spacer(
+                modifier = Modifier.width(32.dp)
+            )
+
+            Map(
+                position = Pair(50.196168, 18.446953),
+                title = "xd",
+            )
         }
     }
 }
