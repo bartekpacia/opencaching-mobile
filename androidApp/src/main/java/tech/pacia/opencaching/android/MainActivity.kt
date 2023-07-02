@@ -1,5 +1,7 @@
 package tech.pacia.opencaching.android
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,9 +21,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview
+@Preview(uiMode = UI_MODE_NIGHT_NO)
 @Composable
-fun DefaultPreview() {
+fun SignInScreenPreviewLight() {
+    MyApplicationTheme {
+        App()
+    }
+}
+
+
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun SignInScreenPreviewDark() {
     MyApplicationTheme {
         App()
     }
