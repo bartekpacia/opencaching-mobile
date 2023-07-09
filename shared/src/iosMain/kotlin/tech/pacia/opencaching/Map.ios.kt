@@ -8,12 +8,14 @@ import platform.CoreLocation.CLLocationCoordinate2DMake
 import platform.MapKit.MKCoordinateRegionMakeWithDistance
 import platform.MapKit.MKMapView
 import platform.MapKit.MKPointAnnotation
+import tech.pacia.opencaching.data.Geocache
 
 @Composable
 actual fun Map(
     modifier: Modifier,
     position: Pair<Double, Double>,
     title: String,
+    caches: List<Geocache>
 ) {
     val coordinate = CLLocationCoordinate2DMake(position.first, position.second)
     val annotation = remember {
@@ -40,5 +42,4 @@ actual fun Map(
             )
         }
     )
-
 }
