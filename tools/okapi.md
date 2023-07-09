@@ -2,7 +2,7 @@
 
 ### Get cache IDs in a bounding box
 
-```
+```console
 http GET opencaching.pl/okapi/services/apiref/method name=='services/caches/search/bbox'
 ```
 
@@ -11,7 +11,7 @@ S|W: 50.181251, 18.421759
 
 S|W|N|E
 
-```
+```console
 http GET opencaching.pl/okapi/services/caches/search/bbox \
   consumer_key==$OKAPI_CONSUMER_KEY \
   bbox=='50.181251|18.421759|50.215760|18.488641'
@@ -21,7 +21,7 @@ http GET opencaching.pl/okapi/services/caches/search/bbox \
 
 Basic request: Drewniany most na rudzie (OP9655):
 
-```
+```console
 http GET opencaching.pl/okapi/services/caches/geocache \
   consumer_key==$OKAPI_CONSUMER_KEY \
   cache_code==OP9655
@@ -29,9 +29,9 @@ http GET opencaching.pl/okapi/services/caches/geocache \
 
 Customized fields:
 
-```
+```console
 http GET opencaching.pl/okapi/services/caches/geocache \
   consumer_key==$OKAPI_CONSUMER_KEY \
   cache_code==OP9655 \
-  fields==code|name|location|type|status
+  fields=="code|name|location|type|status|url"
 ```
