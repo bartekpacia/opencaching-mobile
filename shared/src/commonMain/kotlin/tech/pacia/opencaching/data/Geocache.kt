@@ -17,7 +17,7 @@ data class Geocache(
     val url: String,
     val owner: User,
 ) {
-    enum class Type { Traditional, MULTI, QUIZ }
+    enum class Type { Traditional, Multi, Moving, Quiz, Other }
 
     enum class Status { Available, TEMPORARILY_UNAVAILABLE, ARCHIVED }
 }
@@ -34,7 +34,7 @@ data class BoundingBox(
     val south: Double,
     val west: Double,
 ) {
-    fun toPipeFormat() = "$north|$east|$south|$west"
+    fun toPipeFormat() = "$south|$west|$north|$east"
 }
 
 object LocationAsStringSerializer : KSerializer<Location> {

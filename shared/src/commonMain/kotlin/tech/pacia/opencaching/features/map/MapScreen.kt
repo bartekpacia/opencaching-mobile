@@ -57,16 +57,17 @@ fun MapScreen(navStack: NavigationStack<Page>) {
                 latLng = position,
                 caches = geocaches.toList(),
                 onMapBoundsChange = {
-                    println("Bounding box changed! $it")
+                    if (it == null) return@Map
 
-//                    scope.launch {
-//                        delay(500)
-//                        try {
-//                            geocaches.add(repository.getGeocache("OP9655"))
-//                        } catch (e: Exception) {
-//                            e.printStackTrace()
-//                        }
-//                    }
+                    scope.launch {
+                        delay(500)
+                        try {
+                            geocaches.clear()
+                            geocaches.addAll(repository.searchAndRetrieve(it).values)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
                 }
             )
 
