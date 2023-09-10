@@ -3,6 +3,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     id("kotlin-parcelize")
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
@@ -38,6 +39,8 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.materialIconsExtended)
                 implementation("io.ktor:ktor-client-core:2.3.4")
+                implementation("io.ktor:ktor-client-content-negotiation:2.3.4")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.4")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
             }
@@ -45,7 +48,7 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-okhttp:2.3.2")
+                implementation("io.ktor:ktor-client-okhttp:2.3.4")
             }
         }
 
@@ -58,7 +61,7 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
-                implementation("io.ktor:ktor-client-darwin:2.3.2")
+                implementation("io.ktor:ktor-client-darwin:2.3.4")
             }
         }
     }

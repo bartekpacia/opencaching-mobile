@@ -21,7 +21,7 @@ class CachesRepository(private val client: HttpClient) {
             accept(Json)
             parameter("consumer_key", CONSUMER_KEY)
             parameter("cache_code", code)
-            parameter("fields", "code|name|location|type|status|url|owner")
+            parameter("fields", "code|name|location|status|type")
         }
 
         print("response: $response")

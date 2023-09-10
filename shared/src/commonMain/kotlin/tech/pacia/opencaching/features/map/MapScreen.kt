@@ -2,6 +2,7 @@ package tech.pacia.opencaching.features.map
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,7 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import tech.pacia.opencaching.Map
 import tech.pacia.opencaching.data.CachesRepository
 import tech.pacia.opencaching.navigation.NavigationStack
@@ -36,32 +40,38 @@ fun MapScreen(navStack: NavigationStack<Page>) {
         topBar = { TopAppBar(title = { Text("Map") }) },
 
         ) {
-        Map(
-            Modifier.padding(8.dp),
-            position = position,
-            title = "xd",
-            caches = listOf()
-        )
+        Column {
+            Map(
+                Modifier.padding(8.dp),
+                position = position,
+                title = "xd",
+                caches = listOf()
+            )
 
-        Box(Modifier.height(50.dp).width(200.dp).background(Color.Red))
+            Box(Modifier.height(50.dp).width(200.dp).background(Color.Red))
 
-        LaunchedEffect(position) {
-            scope.launch {
-                val client = HttpClient()
-                val repository = CachesRepository(client)
+            LaunchedEffect(position) {
+                scope.launch {
+                    val client = HttpClient {
+                        install(ContentNegotiation) {
+                            json(Json {
+                                ignoreUnknownKeys = true
+                            })
+                        }
+                    }
+                    val repository = CachesRepository(client)
 
-                try {
-                    val geocache = repository.getGeocache("OP9655")
-                    text = geocache.name
-                } catch (e: Exception) {
-                    text = e.message ?: "error"
-                    e.printStackTrace()
+                    try {
+                        val geocache = repository.getGeocache("OP9655")
+                        text = geocache.name
+                    } catch (e: Exception) {
+                        text = e.message ?: "error"
+                        e.printStackTrace()
+                    }
                 }
             }
 
-
+            Text(text)
         }
-
-        Text(text)
     }
 }

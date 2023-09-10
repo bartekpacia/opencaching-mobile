@@ -26,6 +26,7 @@ data class Geocache(
     enum class Status { AVAILABLE, TEMPORARILY_UNAVAILABLE, ARCHIVED }
 }
 
+@Serializable
 data class Location(
     val latitude: Double,
     val longitude: Double,
