@@ -9,7 +9,7 @@ plugins {
 kotlin {
     targetHierarchy.default()
 
-    android {
+    androidTarget {
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"
@@ -37,8 +37,8 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
                 implementation(compose.materialIconsExtended)
-                implementation("io.ktor:ktor-client-core:2.3.2")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+                implementation("io.ktor:ktor-client-core:2.3.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
             }
         }
@@ -66,7 +66,7 @@ kotlin {
 
 android {
     namespace = "tech.pacia.opencaching"
-    compileSdk = 33
+    compileSdk = 34
     defaultConfig {
         minSdk = 23
     }
