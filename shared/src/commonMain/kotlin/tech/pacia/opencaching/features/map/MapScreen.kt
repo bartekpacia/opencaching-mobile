@@ -45,7 +45,7 @@ fun MapScreen(navStack: NavigationStack<Page>) {
         Column {
             Map(
                 Modifier.padding(8.dp),
-                position = position,
+                latLng = position,
                 title = "xd",
                 caches = listOf()
             )

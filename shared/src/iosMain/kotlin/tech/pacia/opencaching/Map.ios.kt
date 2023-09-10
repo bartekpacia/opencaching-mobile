@@ -16,11 +16,11 @@ import tech.pacia.opencaching.data.Geocache
 @Composable
 actual fun Map(
     modifier: Modifier,
-    position: Pair<Double, Double>,
+    latLng: Pair<Double, Double>,
     title: String,
     caches: List<Geocache>
 ) {
-    val coordinate = CLLocationCoordinate2DMake(position.first, position.second)
+    val coordinate = CLLocationCoordinate2DMake(latLng.first, latLng.second)
     val annotation = remember {
         MKPointAnnotation(
             coordinate = coordinate,

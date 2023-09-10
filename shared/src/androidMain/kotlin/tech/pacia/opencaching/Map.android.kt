@@ -1,26 +1,43 @@
 package tech.pacia.opencaching
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import tech.pacia.opencaching.data.Geocache
 
 @Composable
 actual fun Map(
     modifier: Modifier,
-    position: Pair<Double, Double>,
+    latLng: Pair<Double, Double>,
     title: String,
     caches: List<Geocache>,
 ) {
-    Box(
-        Modifier.height(100.dp).width(100.dp).background(Color.Green)
-    ) {
-        Text("MapScreen is not implemented on Android yet")
+//    Box(
+//        Modifier.height(100.dp).width(100.dp).background(Color.Green)
+//    ) {
+//        Text("MapScreen is not implemented on Android yet")
+//    }
+
+    val singapore = LatLng(1.35, 103.87)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(singapore, 10f)
     }
+    GoogleMap(
+        modifier = Modifier.fillMaxSize(),
+        cameraPositionState = cameraPositionState
+    ) {
+        Marker(
+            state = MarkerState(position = singapore),
+            title = "Singapore",
+            snippet = "Marker in Singapore"
+        )
+    }
+
 }

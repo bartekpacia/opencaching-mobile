@@ -7,7 +7,7 @@ import tech.pacia.opencaching.data.Geocache
 @Composable
 expect fun Map(
     modifier: Modifier = Modifier,
-    position: Pair<Double, Double>,
+    latLng: Pair<Double, Double>,
     title: String,
     caches: List<Geocache>,
 )
