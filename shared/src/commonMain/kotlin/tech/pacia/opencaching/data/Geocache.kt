@@ -29,10 +29,10 @@ data class Location(
 )
 
 data class BoundingBox(
-    val north: Location,
-    val east: Location,
-    val south: Location,
-    val west: Location,
+    val north: Double,
+    val east: Double,
+    val south: Double,
+    val west: Double,
 ) {
     fun toPipeFormat() = "$north|$east|$south|$west"
 }

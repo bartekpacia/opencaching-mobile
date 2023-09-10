@@ -11,20 +11,21 @@ import platform.CoreLocation.CLLocationCoordinate2DMake
 import platform.MapKit.MKCoordinateRegionMakeWithDistance
 import platform.MapKit.MKMapView
 import platform.MapKit.MKPointAnnotation
+import tech.pacia.opencaching.data.BoundingBox
 import tech.pacia.opencaching.data.Geocache
 
 @Composable
 actual fun Map(
     modifier: Modifier,
     latLng: Pair<Double, Double>,
-    title: String,
-    caches: List<Geocache>
+    caches: List<Geocache>,
+    onMapBoundsChange: (BoundingBox?) -> Unit,
 ) {
     val coordinate = CLLocationCoordinate2DMake(latLng.first, latLng.second)
     val annotation = remember {
         MKPointAnnotation(
             coordinate = coordinate,
-            title = title,
+            title = "hehe",
             subtitle = null,
         )
     }
