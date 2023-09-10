@@ -16,12 +16,12 @@ class CachesRepository(private val client: HttpClient) {
 //        client.get("$API_URL/caches/search/bbox").body<>()
 //    }
 
-    suspend fun getGeocache(code: String): PoorMansGeocache {
+    suspend fun getGeocache(code: String): Geocache {
         val response = client.get("$API_URL/caches/geocache") {
             accept(Json)
             parameter("consumer_key", CONSUMER_KEY)
             parameter("cache_code", code)
-            parameter("fields", "code|name|location|status|type")
+            parameter("fields", "code|name|location|status|type|url|owner")
         }
 
         print("response: $response")

@@ -22,10 +22,12 @@ import androidx.compose.ui.unit.dp
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import tech.pacia.opencaching.Map
 import tech.pacia.opencaching.data.CachesRepository
+import tech.pacia.opencaching.data.Geocache
 import tech.pacia.opencaching.navigation.NavigationStack
 import tech.pacia.opencaching.navigation.Page
 
@@ -34,7 +36,7 @@ fun MapScreen(navStack: NavigationStack<Page>) {
     val position = Pair(50.196168, 18.446953)
 
     val scope = rememberCoroutineScope()
-    var text by remember { mutableStateOf("Loading") }
+    var geocache by remember { mutableStateOf<Geocache?>(null) }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Map") }) },
@@ -61,17 +63,21 @@ fun MapScreen(navStack: NavigationStack<Page>) {
                     }
                     val repository = CachesRepository(client)
 
+                    delay(1000)
+
                     try {
-                        val geocache = repository.getGeocache("OP9655")
-                        text = geocache.name
+                        geocache = repository.getGeocache("OP9655")
                     } catch (e: Exception) {
-                        text = e.message ?: "error"
                         e.printStackTrace()
                     }
                 }
             }
 
-            Text(text)
+            geocache?.let {
+                Text("Name: ${it.name}")
+                Text("Type: ${it.type}")
+                Text("Owner username: ${it.owner.username}")
+            }
         }
     }
 }
