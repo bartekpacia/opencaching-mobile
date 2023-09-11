@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.interop.UIKitView
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import platform.CoreLocation.CLLocationCoordinate2DMake
 import platform.Foundation.NSLog
 import platform.MapKit.MKCoordinateRegionMake
@@ -23,6 +25,7 @@ import tech.pacia.opencaching.data.BoundingBox
 import tech.pacia.opencaching.data.Geocache
 import tech.pacia.opencaching.data.Location
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 
 @OptIn(ExperimentalForeignApi::class)
@@ -82,22 +85,27 @@ actual fun Map(
                     longitudinalMeters = 10_000.0
                 ),
             )
-
-            onMapBoundsChange(it.boundingBox())
         }
     )
 }
 
+/**
+ * A delegate that fires a callback when map bounds change. It does so in a debounced manner.
+ */
 class MapViewDelegate(private val onMapBoundsChange: (BoundingBox?) -> Unit) : NSObject(),
     MKMapViewDelegateProtocol {
 
-    override fun mapView(mapView: MKMapView, regionDidChangeAnimated: Boolean) {
-        debugLog("MapViewDelegate", "regionDidChangeAnimated: ${mapView.boundingBox()}")
-    }
+    private var lastInstant = Clock.System.now()
 
     override fun mapViewDidChangeVisibleRegion(mapView: MKMapView) {
-        // onMapBoundsChange(mapView.boundingBox())
-        debugLog("MapViewDelegate", "mapViewDidChangeVisibleRegion: ${mapView.boundingBox()}")
+        val currentInstant = Clock.System.now()
+        val duration = currentInstant - lastInstant
+
+        if (duration >= 1.seconds) {
+            onMapBoundsChange(mapView.boundingBox())
+        }
+
+        lastInstant = currentInstant
     }
 }
 

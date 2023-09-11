@@ -30,7 +30,7 @@ class CachesRepository(private val client: HttpClient) {
             parameter("wrap", false)
         }
 
-        debugLog("CachesRepository", "response: $response")
+        debugLog("CachesRepository", "response: OMMITED")
 
         return response.body()
     }
