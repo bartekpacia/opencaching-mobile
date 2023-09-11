@@ -6,9 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -25,12 +26,15 @@ import kotlinx.serialization.json.Json
 import tech.pacia.opencaching.Map
 import tech.pacia.opencaching.data.CachesRepository
 import tech.pacia.opencaching.data.Geocache
+import tech.pacia.opencaching.data.Location
+import tech.pacia.opencaching.debugLog
 import tech.pacia.opencaching.navigation.NavigationStack
 import tech.pacia.opencaching.navigation.Page
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(navStack: NavigationStack<Page>) {
-    val position = Pair(50.196168, 18.446953)
+    val centerOfRudy = Location(latitude = 50.196168, longitude = 18.446953)
 
     val scope = rememberCoroutineScope()
     val geocaches = remember { mutableStateListOf<Geocache>() }
@@ -54,10 +58,12 @@ fun MapScreen(navStack: NavigationStack<Page>) {
         Column {
             Map(
                 Modifier.padding(8.dp),
-                latLng = position,
+                center = centerOfRudy,
                 caches = geocaches.toList(),
                 onMapBoundsChange = {
                     if (it == null) return@Map
+
+                    return@Map
 
                     scope.launch {
                         delay(500)

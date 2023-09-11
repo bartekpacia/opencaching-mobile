@@ -8,6 +8,7 @@ import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import tech.pacia.opencaching.debugLog
 
 const val API_URL = "https://opencaching.pl/okapi/services"
 const val CONSUMER_KEY = "duM7DuHSXQtLK7PCx9ee"
@@ -29,7 +30,7 @@ class CachesRepository(private val client: HttpClient) {
             parameter("wrap", false)
         }
 
-        println("response: $response")
+        debugLog("CachesRepository", "response: $response")
 
         return response.body()
     }
@@ -41,7 +42,7 @@ class CachesRepository(private val client: HttpClient) {
             parameter("bbox", bbox.toPipeFormat())
         }
 
-        println("response: $response")
+        debugLog("CachesRepository", "response: $response")
 
         return response.body()
     }
@@ -55,7 +56,7 @@ class CachesRepository(private val client: HttpClient) {
             parameter("fields", "code|name|location|status|type|url|owner")
         }
 
-        println("response: $response")
+        debugLog("CachesRepository", "response: $response")
 
         return response.body()
     }

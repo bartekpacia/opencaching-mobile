@@ -22,13 +22,12 @@ import tech.pacia.opencaching.data.Location
 @Composable
 actual fun Map(
     modifier: Modifier,
-    latLng: Pair<Double, Double>,
+    center: Location,
     caches: List<Geocache>,
     onMapBoundsChange: (BoundingBox?) -> Unit,
 ) {
-    val singapore = LatLng(latLng.first, latLng.second)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 14f)
+        position = CameraPosition.fromLatLngZoom(center.toLatLng(), 14f)
     }
 
     LaunchedEffect(!cameraPositionState.isMoving) {
