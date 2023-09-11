@@ -30,9 +30,12 @@ class CachesRepository(private val client: HttpClient) {
             parameter("wrap", false)
         }
 
-        debugLog("CachesRepository", "response: OMMITED")
 
-        return response.body()
+        val body = response.body<Map<String, Geocache>>()
+
+        debugLog("CachesRepository", "response: got ${body.values.size} geocaches")
+
+        return body
     }
 
     suspend fun searchInBoundingBox(bbox: BoundingBox): List<Geocache> {

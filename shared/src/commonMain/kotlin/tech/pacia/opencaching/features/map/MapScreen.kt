@@ -63,8 +63,6 @@ fun MapScreen(navStack: NavigationStack<Page>) {
                 onMapBoundsChange = {
                     if (it == null) return@Map
 
-                    debugLog("MapScreen", "bounds: $it")
-
                     scope.launch {
                         delay(500)
                         try {

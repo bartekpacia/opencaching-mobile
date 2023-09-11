@@ -10,21 +10,15 @@ import androidx.compose.ui.interop.UIKitView
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import platform.CoreLocation.CLLocationCoordinate2DMake
-import platform.Foundation.NSLog
-import platform.MapKit.MKCoordinateRegionMake
 import platform.MapKit.MKCoordinateRegionMakeWithDistance
-import platform.MapKit.MKCoordinateSpanMake
 import platform.MapKit.MKMapView
 import platform.MapKit.MKMapViewDelegateProtocol
 import platform.MapKit.MKPointAnnotation
-import platform.UIKit.UICoordinateSpaceProtocol
 import platform.darwin.NSObject
 import tech.pacia.opencaching.data.BoundingBox
 import tech.pacia.opencaching.data.Geocache
 import tech.pacia.opencaching.data.Location
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 
@@ -45,37 +39,17 @@ actual fun Map(
             title = it.name,
             subtitle = it.code,
         )
-
     }
 
     val mapViewDelegate = remember {
-        MapViewDelegate(
-            onMapBoundsChange = onMapBoundsChange
-        )
+        MapViewDelegate(onMapBoundsChange = onMapBoundsChange)
     }
 
-    val mkMapView = remember {
-        val mapView = MKMapView()
-        mapView.delegate = mapViewDelegate
-        mapView
-    }
+    val mkMapView = remember() {
+        MKMapView().apply {
+            delegate = mapViewDelegate
 
-    UIKitView(
-        modifier = modifier,
-        factory = { mkMapView },
-        update = {
-            it.addAnnotations(annotations)
-
-            it.addAnnotation(
-                MKPointAnnotation(
-                    CLLocationCoordinate2DMake(
-                        center.latitude,
-                        center.longitude
-                    ),
-                )
-            )
-
-            it.setRegion(
+            setRegion(
                 MKCoordinateRegionMakeWithDistance(
                     centerCoordinate = CLLocationCoordinate2DMake(
                         center.latitude,
@@ -83,9 +57,25 @@ actual fun Map(
                     ),
                     latitudinalMeters = 10_000.0,
                     longitudinalMeters = 10_000.0
-                ),
+                )
             )
+
+            addAnnotation(
+                MKPointAnnotation(CLLocationCoordinate2DMake(center.latitude, center.longitude))
+            )
+
+            addAnnotations(annotations)
         }
+    }
+
+    LaunchedEffect(annotations.size) {
+        mkMapView.addAnnotations(annotations)
+    }
+
+    UIKitView(
+        modifier = modifier,
+        factory = { mkMapView },
+        update = { }
     )
 }
 
@@ -103,22 +93,14 @@ class MapViewDelegate(private val onMapBoundsChange: (BoundingBox?) -> Unit) : N
 
         if (duration >= 1.seconds) {
             onMapBoundsChange(mapView.boundingBox())
+            lastInstant = currentInstant
         }
-
-        lastInstant = currentInstant
     }
 }
 
 
 @OptIn(ExperimentalForeignApi::class)
 fun MKMapView.boundingBox(): BoundingBox {
-//    val center = this.region.useContents {
-//        debugLog("Inside useContents", "lat: ${center.latitude}, lng: ${center.longitude}")
-//        this.center
-//    }
-//
-//    debugLog("OUTSIDE useContents", "lat: ${center.latitude}, lng: ${center.longitude}")
-
     // Be careful - don't return objects from useContents or dragons will appear
 
     val latitude = region.useContents { center.latitude }

@@ -17,7 +17,7 @@ data class Geocache(
     val url: String,
     val owner: User,
 ) {
-    enum class Type { Traditional, Multi, Moving, Quiz, Other }
+    enum class Type { Traditional, Multi, Moving, Quiz, Own, Webcam, Other }
 
     enum class Status { Available, TEMPORARILY_UNAVAILABLE, ARCHIVED }
 }
