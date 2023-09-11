@@ -11,6 +11,8 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import kotlinx.datetime.Clock
 import platform.CoreLocation.CLLocationCoordinate2DMake
+import platform.MapKit.MKAnnotationProtocol
+import platform.MapKit.MKAnnotationView
 import platform.MapKit.MKCoordinateRegionMakeWithDistance
 import platform.MapKit.MKMapView
 import platform.MapKit.MKMapViewDelegateProtocol
@@ -86,6 +88,10 @@ class MapViewDelegate(private val onMapBoundsChange: (BoundingBox?) -> Unit) : N
     MKMapViewDelegateProtocol {
 
     private var lastInstant = Clock.System.now()
+
+    override fun mapView(mapView: MKMapView, didSelectAnnotation: MKAnnotationProtocol) {
+        debugLog("MapViewDelegate", "didSelectAnnotation")
+    }
 
     override fun mapViewDidChangeVisibleRegion(mapView: MKMapView) {
         val currentInstant = Clock.System.now()
