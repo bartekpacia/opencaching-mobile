@@ -21,6 +21,7 @@ import platform.darwin.NSObject
 import tech.pacia.opencaching.data.BoundingBox
 import tech.pacia.opencaching.data.Geocache
 import tech.pacia.opencaching.data.Location
+import tech.pacia.opencaching.navigation.GeocachePage
 import kotlin.time.Duration.Companion.seconds
 
 
@@ -44,7 +45,11 @@ actual fun Map(
     }
 
     val mapViewDelegate = remember {
-        MapViewDelegate(onMapBoundsChange = onMapBoundsChange)
+        MapViewDelegate(
+            onMapBoundsChange = onMapBoundsChange,
+            // TODO: Move NavStack to CompositionLocal?
+            didSelectAnnotation = { /* navStack.push(GeocachePage()) */ }
+        )
     }
 
     val mkMapView = remember() {
@@ -84,13 +89,17 @@ actual fun Map(
 /**
  * A delegate that fires a callback when map bounds change. It does so in a debounced manner.
  */
-class MapViewDelegate(private val onMapBoundsChange: (BoundingBox?) -> Unit) : NSObject(),
+class MapViewDelegate(
+    private val onMapBoundsChange: (BoundingBox?) -> Unit,
+    private val didSelectAnnotation: (MKAnnotationProtocol) -> Unit
+) : NSObject(),
     MKMapViewDelegateProtocol {
 
     private var lastInstant = Clock.System.now()
 
     override fun mapView(mapView: MKMapView, didSelectAnnotation: MKAnnotationProtocol) {
         debugLog("MapViewDelegate", "didSelectAnnotation")
+        didSelectAnnotation(didSelectAnnotation)
     }
 
     override fun mapViewDidChangeVisibleRegion(mapView: MKMapView) {
