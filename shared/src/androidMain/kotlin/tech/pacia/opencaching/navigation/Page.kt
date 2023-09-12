@@ -8,3 +8,6 @@ actual class SignInPage : Page, Parcelable
 
 @Parcelize
 actual class MapPage : Page, Parcelable
+
+@Parcelize
+actual class GeocachePage : Page, Parcelable

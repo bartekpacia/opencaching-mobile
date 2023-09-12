@@ -5,8 +5,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
+import tech.pacia.opencaching.features.geocache.GeocacheScreen
 import tech.pacia.opencaching.features.map.MapScreen
 import tech.pacia.opencaching.features.sign_in.SignInScreen
+import tech.pacia.opencaching.navigation.GeocachePage
 import tech.pacia.opencaching.navigation.MapPage
 import tech.pacia.opencaching.navigation.NavigationStack
 import tech.pacia.opencaching.navigation.Page
@@ -35,6 +37,10 @@ fun App() {
 
             is MapPage -> {
                 MapScreen(navStack = navigationStack)
+            }
+
+            is GeocachePage -> {
+                GeocacheScreen(navStack = navigationStack)
             }
         }
     }

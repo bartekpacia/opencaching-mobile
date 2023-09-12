@@ -35,3 +35,15 @@ http GET opencaching.pl/okapi/services/caches/geocache \
   cache_code==OP9655 \
   fields=="code|name|location|type|status|url"
 ```
+
+### Get caches in a bounding box
+
+```console
+http GET opencaching.pl/okapi/services/caches/shortcuts/search_and_retrieve \
+    consumer_key==$OKAPI_CONSUMER_KEY \
+    search_method=="services/caches/search/bbox" \
+    search_params=='{"bbox": "50.181251|18.421759|50.215760|18.488641"}' \
+    retr_method=="services/caches/geocaches" \
+    retr_params=='{"fields": "code|name|location|status|type|url|owner"}' \
+    wrap==false
+```
