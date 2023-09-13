@@ -1,7 +1,6 @@
 package tech.pacia.opencaching
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -14,7 +13,6 @@ import tech.pacia.opencaching.navigation.NavigationStack
 import tech.pacia.opencaching.navigation.Page
 import tech.pacia.opencaching.navigation.SignInPage
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun App() {
     val navigationStack = rememberSaveable(
