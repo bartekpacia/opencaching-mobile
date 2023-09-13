@@ -15,9 +15,11 @@ import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 import tech.pacia.opencaching.data.BoundingBox
 import tech.pacia.opencaching.data.Geocache
 import tech.pacia.opencaching.data.Location
+import tech.pacia.opencaching.navigation.GeocachePage
 
 @Composable
 actual fun Map(
@@ -26,13 +28,16 @@ actual fun Map(
     caches: List<Geocache>,
     onMapBoundsChange: (BoundingBox?) -> Unit,
 ) {
+    debugLog("Map", "recomposition!")
+
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(center.toLatLng(), 14f)
     }
 
-    LaunchedEffect(!cameraPositionState.isMoving) {
-        onMapBoundsChange(cameraPositionState.projection?.visibleRegion?.latLngBounds?.toBoundingBox())
-    }
+//    LaunchedEffect(cameraPositionState.position.target) {
+//        debugLog("Map", "moving!")
+//        onMapBoundsChange(cameraPositionState.projection?.visibleRegion?.latLngBounds?.toBoundingBox())
+//    }
 
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
@@ -46,13 +51,17 @@ actual fun Map(
             )
         }
     ) {
-
         for (cache in caches) {
+            val navStack = LocalNavigationStack.current
+
             Marker(
-                state = MarkerState(position = cache.location.toLatLng()),
+                state = rememberMarkerState(key = cache.code, position = cache.location.toLatLng()),
                 title = cache.name,
                 snippet = cache.code,
-                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN),
+                onInfoWindowClick = {
+                    navStack.push(GeocachePage(cache.code))
+                }
             )
         }
     }

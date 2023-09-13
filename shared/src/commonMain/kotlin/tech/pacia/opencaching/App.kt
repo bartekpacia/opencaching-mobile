@@ -30,7 +30,7 @@ fun App() {
 
                 is MapPage -> { MapScreen() }
 
-                is GeocachePage -> { GeocacheScreen() }
+                is GeocachePage -> { GeocacheScreen(page.code) }
             }
         }
     }
