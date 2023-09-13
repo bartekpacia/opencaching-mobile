@@ -27,6 +27,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import tech.pacia.opencaching.LocalNavigationStack
 import tech.pacia.opencaching.Map
 import tech.pacia.opencaching.data.CachesRepository
 import tech.pacia.opencaching.data.Geocache
@@ -36,7 +37,7 @@ import tech.pacia.opencaching.navigation.Page
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapScreen(navStack: NavigationStack<Page>) {
+fun MapScreen() {
     val centerOfRudy = Location(latitude = 50.196168, longitude = 18.446953)
 
     val scope = rememberCoroutineScope()
@@ -53,6 +54,8 @@ fun MapScreen(navStack: NavigationStack<Page>) {
     }
 
     val repository = remember { CachesRepository(httpClient) }
+
+    val navStack = LocalNavigationStack.current
 
     Scaffold(
         topBar = {

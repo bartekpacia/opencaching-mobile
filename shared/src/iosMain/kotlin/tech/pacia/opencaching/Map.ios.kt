@@ -97,7 +97,11 @@ class MapViewDelegate(
 
     override fun mapView(mapView: MKMapView, didSelectAnnotation: MKAnnotationProtocol) {
         debugLog("MapViewDelegate", "didSelectAnnotation")
-        onGeocacheTap(didSelectAnnotation.subtitle!!)
+
+        val subtitle = didSelectAnnotation.subtitle
+        if (subtitle != null) {
+            onGeocacheTap(subtitle)
+        }
     }
 
     override fun mapViewDidChangeVisibleRegion(mapView: MKMapView) {
