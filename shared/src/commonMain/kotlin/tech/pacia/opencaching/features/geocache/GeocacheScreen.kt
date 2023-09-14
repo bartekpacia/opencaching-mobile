@@ -10,16 +10,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import tech.pacia.opencaching.navigation.NavigationStack
-import tech.pacia.opencaching.navigation.Page
+import tech.pacia.opencaching.LocalNavigationStack
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GeocacheScreen(navStack: NavigationStack<Page>) {
+fun GeocacheScreen(code: String) {
+    val navStack = LocalNavigationStack.current
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Map") },
+                title = { Text("Geocache $code") },
                 navigationIcon = {
                     IconButton(onClick = { navStack.pop() }) {
                         Icon(

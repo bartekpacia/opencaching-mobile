@@ -12,7 +12,6 @@ import kotlinx.cinterop.useContents
 import kotlinx.datetime.Clock
 import platform.CoreLocation.CLLocationCoordinate2DMake
 import platform.MapKit.MKAnnotationProtocol
-import platform.MapKit.MKAnnotationView
 import platform.MapKit.MKCoordinateRegionMakeWithDistance
 import platform.MapKit.MKMapView
 import platform.MapKit.MKMapViewDelegateProtocol
@@ -21,7 +20,6 @@ import platform.darwin.NSObject
 import tech.pacia.opencaching.data.BoundingBox
 import tech.pacia.opencaching.data.Geocache
 import tech.pacia.opencaching.data.Location
-import tech.pacia.opencaching.navigation.GeocachePage
 import kotlin.time.Duration.Companion.seconds
 
 
@@ -48,11 +46,11 @@ actual fun Map(
         MapViewDelegate(
             onMapBoundsChange = onMapBoundsChange,
             // TODO: Move NavStack to CompositionLocal?
-            didSelectAnnotation = { /* navStack.push(GeocachePage()) */ }
+            onGeocacheTap = { /* navStack.push(GeocachePage()) */ }
         )
     }
 
-    val mkMapView = remember() {
+    val mkMapView = remember {
         MKMapView().apply {
             delegate = mapViewDelegate
 
@@ -91,7 +89,7 @@ actual fun Map(
  */
 class MapViewDelegate(
     private val onMapBoundsChange: (BoundingBox?) -> Unit,
-    private val didSelectAnnotation: (MKAnnotationProtocol) -> Unit
+    private val onGeocacheTap: (String) -> Unit
 ) : NSObject(),
     MKMapViewDelegateProtocol {
 
@@ -99,7 +97,11 @@ class MapViewDelegate(
 
     override fun mapView(mapView: MKMapView, didSelectAnnotation: MKAnnotationProtocol) {
         debugLog("MapViewDelegate", "didSelectAnnotation")
-        didSelectAnnotation(didSelectAnnotation)
+
+        val subtitle = didSelectAnnotation.subtitle
+        if (subtitle != null) {
+            onGeocacheTap(subtitle)
+        }
     }
 
     override fun mapViewDidChangeVisibleRegion(mapView: MKMapView) {

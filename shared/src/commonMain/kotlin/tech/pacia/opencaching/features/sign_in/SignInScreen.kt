@@ -33,13 +33,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import tech.pacia.opencaching.LocalNavigationStack
 import tech.pacia.opencaching.navigation.MapPage
 import tech.pacia.opencaching.navigation.NavigationStack
 import tech.pacia.opencaching.navigation.Page
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreen(navStack: NavigationStack<Page>) {
+fun SignInScreen() {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var count by remember { mutableStateOf(0) }
@@ -100,6 +101,7 @@ fun SignInScreen(navStack: NavigationStack<Page>) {
                     }
                 )
 
+                val navStack = LocalNavigationStack.current
                 Button(
                     onClick = { navStack.push(MapPage()) },
                     modifier = Modifier.fillMaxWidth(fraction = 0.75f).padding(8.dp)

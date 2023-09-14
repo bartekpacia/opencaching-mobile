@@ -10,4 +10,4 @@ actual class SignInPage : Page, Parcelable
 actual class MapPage : Page, Parcelable
 
 @Parcelize
-actual class GeocachePage : Page, Parcelable
+actual class GeocachePage actual constructor(actual val code: String) : Page, Parcelable
